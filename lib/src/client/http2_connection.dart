@@ -76,8 +76,16 @@ class Http2ClientConnection implements connection.ClientConnection {
   static const _estimatedRoundTripTime = const Duration(milliseconds: 20);
 
   Future<ClientTransportConnection> connectTransport() async {
+
+    // If the connection times out a [SocketException] is thrown and
+    // caught in [_connect] which calls [_handleConnectionFailure]
+    Socket socket = await Socket.connect(
+      host,
+      port,
+      timeout: options.connectTimeout,
+    );
+
     final securityContext = credentials.securityContext;
-    Socket socket = await Socket.connect(host, port);
     if (securityContext != null) {
       // Todo(sigurdm): We want to pass supportedProtocols: ['h2']. http://dartbug.com/37950
       socket = await SecureSocket.secure(socket,

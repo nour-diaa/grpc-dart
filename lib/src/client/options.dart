@@ -45,6 +45,9 @@ class ChannelOptions {
   final ChannelCredentials credentials;
   final Duration idleTimeout;
 
+  /// Initial socket connect timeout (null value uses system default)
+  final Duration connectTimeout;
+
   /// The maximum time a single connection will be used for new requests.
   final Duration connectionTimeout;
   final BackoffStrategy backoffStrategy;
@@ -53,6 +56,7 @@ class ChannelOptions {
   const ChannelOptions({
     this.credentials = const ChannelCredentials.secure(),
     this.idleTimeout = defaultIdleTimeout,
+    this.connectTimeout,
     this.userAgent = defaultUserAgent,
     this.backoffStrategy = defaultBackoffStrategy,
     this.connectionTimeout = defaultConnectionTimeOut,
